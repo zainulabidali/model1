@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:model1/screens/homeScreenPage.dart/extract_Add_container.dart';
 import 'package:provider/provider.dart';
 import 'package:model1/provider.dart';
 import 'package:model1/screens/const.dart';
@@ -76,56 +77,151 @@ class HomePageBody extends StatelessWidget {
 
                         // Handle unavailable products
                         if (!product["status"]) {
-                          return Card(
+                          return Stack(
+                            children: [
+                              Card(
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align all content to the start (left)
+                                    children: [
+                                      // Image with border radius
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            10), // Added radius to image
+                                        child: Image.network(
+                                          product["image"][0]["url"],
+                                          fit: BoxFit.cover,
+                                          height: 150,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+
+                                      // Text wrapped in Column
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start, // Ensure text is aligned to the left (start)
+                                        children: [
+                                          Text(
+                                            product["title"],
+                                            style: KprodectnameText.copyWith(
+                                                fontSize: 16,
+                                                color:
+                                                    KsecondaryColor), // Styled product name
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            "Unavailable",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontSize:
+                                                    13), // Styled unavailable text
+                                          ),
+                                        ],
+                                      ),
+
+                                      SizedBox(height: 10),
+
+                                      // Buttons wrapped in Row
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .start, // Align buttons to the start (left)
+                                        children: [
+                                          Container(
+                                            height: 20,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              color: Colors.green[100],
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(width: 5),
+                                                Text("Add to Cart"),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            width: 20,
+                                            decoration: BoxDecoration(
+                                              color: Colors.green[100],
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: const Icon(
+                                              Icons.arrow_right,
+                                              color: Colors.green,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 0),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )),
+                              PositionedAddContainer(),
+                            ],
+                          );
+                        }
+
+                        return Stack(
+                          children: [
+                            Card(
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .start, // Align all content to the start (left)
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Image with border radius
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Added radius to image
-                                    child: Image.network(
-                                      product["image"][0]["url"],
-                                      fit: BoxFit.cover,
-                                      height: 150,
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        product["image"][0]["url"],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-
-                                  // Text wrapped in Column
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // Ensure text is aligned to the left (start)
-                                    children: [
-                                      Text(
-                                        product["title"],
-                                        style: KprodectnameText.copyWith(
-                                          fontSize: 16,
-                                            color:
-                                                KsecondaryColor), // Styled product name
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        "Unavailable",
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize:
-                                                13), // Styled unavailable text
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(product["title"],
+                                            style: KprodectnameText),
+                                        const SizedBox(height: 3),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "\$${product["discountPrice"]}",
+                                              style: KpriceText.copyWith(
+                                                  color: KsecondaryColor),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              "MRP \$${product["price"]}",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-
-                                  SizedBox(height: 10),
-
-                                  // Buttons wrapped in Row
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start, // Align buttons to the start (left)
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
                                         height: 20,
@@ -162,92 +258,10 @@ class HomePageBody extends StatelessWidget {
                                     ],
                                   ),
                                 ],
-                              ));
-                        }
-
-                        return Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    product["image"][0]["url"],
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
-                                ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(product["title"],
-                                        style: KprodectnameText),
-                                    const SizedBox(height: 3),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "\$${product["discountPrice"]}",
-                                          style: KpriceText.copyWith(
-                                              color: KsecondaryColor),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "MRP \$${product["price"]}",
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    width: 110,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green[100],
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 5),
-                                        Text("Add to Cart"),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 20,
-                                    width: 20,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green[100],
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Icon(
-                                      Icons.arrow_right,
-                                      color: Colors.green,
-                                    ),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            PositionedAddContainer()
+                          ],
                         );
                       },
                     ),
